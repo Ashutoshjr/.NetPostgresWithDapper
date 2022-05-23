@@ -14,15 +14,13 @@ namespace PostgresWithDapper
     {
         static void Main(string[] args)
         {
-
-
             var connectionString = "host=172.16.0.96;port=5432;database=VMS;user id=postgres;password=12345";
             var connection = new NpgsqlConnection(connectionString);
             connection.Open();
             var transaction = connection.BeginTransaction();
             try
             {
-                string commandText = $"Call sp_searcheventsbycriteriaORcondition('<VMS><SearchData><EventTypeID>100</EventTypeID><ResourceID>fe2ea23d-5502-4b00-a225-96e9b4cfe8c1</ResourceID><MinTime></MinTime><ExtraData></ExtraData><OwnerId></OwnerId><Title></Title><Description></Description><AdvancedFilter>{"IsAnd":false,\"Conditions\":[]}</AdvancedFilter></SearchData></VMS>','30',null,null,null,'OR','result');";
+                string commandText = $"Call sp_eventsearch(2,'result');";
                 var result = connection.Query<string>(commandText);
 
                 string fetchCommandText = "fetch all in \"result\";";
