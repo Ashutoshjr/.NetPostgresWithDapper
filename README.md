@@ -1,6 +1,7 @@
 # .NetPostgresWithDapper
-calling postgresql stored procedure from c# using dapper.
 
+Sample code to call postgresql stored procedure from c# using dapper.
+--------------------------------------------------------------------------------------------------------------
 
 I am refering below Sample Postgres Stored Procedure. 
 
