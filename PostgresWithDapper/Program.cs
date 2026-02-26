@@ -1,12 +1,9 @@
-﻿using Dapper;
+using Dapper;
 using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PostgresWithDapper
 {
@@ -21,20 +18,27 @@ namespace PostgresWithDapper
             try
             {
                 string commandText = $"Call sp_eventsearch(2,'result');";
-                var result = connection.Query<string>(commandText);
+                connection.Query<string>(commandText);
 
                 string fetchCommandText = "fetch all in \"result\";";
                 var employees = connection.Query<Employee>(fetchCommandText);
 
+                // Display fetched employee records
+                foreach (var employee in employees)
+                {
+                    Console.WriteLine($"ID: {employee.Emp_id}, Name: {employee.Name}, Dept: {employee.Dept}, Salary: {employee.Salary}, Date: {employee.Fiforefdate}");
+                }
+
+                transaction.Commit();
             }
             catch (Exception ex)
             {
-
+                transaction.Rollback();
+                Console.WriteLine($"Error: {ex.Message}");
                 throw;
             }
             finally
             {
-                transaction.Commit();
                 connection.Close();
             }
         }
